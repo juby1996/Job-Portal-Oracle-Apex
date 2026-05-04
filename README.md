@@ -36,7 +36,7 @@ The application logic is built on a four-table relational model:
 
 ## 📸 Application Preview
 ### **Dashboard View**
-![Dashboard](image_a9afff.png)
+![Dashboard](dashboard.png)
 
 ### **Job Search Interface**
 ![Job Search](image_b5dbbf.png)
