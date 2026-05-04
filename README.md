@@ -39,7 +39,7 @@ The application logic is built on a four-table relational model:
 ![Dashboard](dashboard.png)
 
 ### **Job Search Interface**
-![Job Search](job search.png)
+![Job Search](jobsearch.png)
 
 
 Files for the Apex Job portal application
