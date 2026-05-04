@@ -1,0 +1,114 @@
+drop table Jobskills;
+drop table Appskills;
+drop table Applies;
+drop table Applicant;
+drop table Skills;
+drop table Job;
+drop table Company;
+
+create table Company(compid varchar2(5) primary key, compname varchar2(20), 
+                     comptype varchar2(15));
+create table Job(jobid varchar2(5) primary key, jobtitle varchar2(20),
+                 salarylow int, salaryhigh int, location varchar2(10), 
+                 compid references Company(compid) on delete cascade);
+create table Skills(skillid varchar2(5) primary key, skillname varchar2(15));
+create table Jobskills(jobid references Job(jobid) on delete cascade, 
+                       skillid references Skills(skillid), 
+		       expertiseneeded int, primary key(jobid,skillid));
+create table Applicant(appid varchar2(5) primary key, name varchar2(15), 
+                       age int, highdegree varchar2(5), expected_salary int) ;
+create table AppSkills(appid references Applicant(appid) on delete cascade, 
+                       skillid references Skills(skillid), expertise int,
+                       primary key(appid, skillid));
+create table Applies(jobid references Job(jobid), 
+                     appid references Applicant(appid) on delete cascade, 
+                     appdate date, decisiondate date, outcome varchar2(10),  
+                     primary key(jobid, appid));
+
+--  Initial Company data
+insert into Company values('PWC', 'Price Waterhouse', 'consulting');
+insert into Company values('MSFT', 'Microsoft', 'software');
+insert into Company values('INTL', 'Intel', 'electronics');
+insert into Company values('NCR', 'NCR Corp', 'server');
+insert into Company values('WPAF', 'WP Air Force', 'defense');
+insert into Company values('DLT', 'Deloitte', 'consulting');
+
+-- Initial Job data
+insert into Job values('101', 'Programmer', 55000, 60000, 'Redmond', 'MSFT');
+insert into Job values('j02', 'Designer', 42000, 45000, 'Redmond', 'MSFT');
+insert into Job values('j03', 'SAP impl', 30000, 40000, 'Chicago', 'PWC');
+insert into Job values('j04', 'Proj mgmt', 35000, 55000, 'Chicago', 'PWC');
+insert into Job values('j05', 'SOX', 60000, 65000, 'Detroit', 'PWC');
+insert into Job values('j06', 'db admin', 45000, 50000, 'Dayton', 'NCR');
+insert into Job values('j07', 'db designer', 35000, 40000, 'Dayton', 'NCR');
+insert into Job values('j08', 'intern', 25000, 28000, 'Dayton', 'NCR');
+insert into Job values('j09', 'engineer', 52000, 55000, 'Dayton','WPAF');
+insert into Job values('j10', 'dba', 62000, 65000, 'Dayton','WPAF');
+insert into Job values('j11', 'hardware dev', 50000, 65000, 'NYC','INTL');
+insert into Job values('j12', 'pcb designer', 55000, 68000,'NYC','INTL');
+insert into Job values('j13', 'chip designer', 40000, 55000,'Chicago','INTL');
+insert into Job values('j14', 'IT', 40000, 60000, 'Dayton', 'DLT');
+insert into Job values('j15', 'IT', 50000, 70000, 'Chicago', 'DLT');
+
+-- initial Skills data
+insert into Skills values('s1', 'database');
+insert into Skills values('s2', 'programming');
+insert into Skills values('s3', 'sox');
+insert into Skills values('s4', 'project');
+insert into Skills values('s5', 'hardware');
+insert into Skills values('s6', 'sap');
+insert into Skills values('s7', 'analysis');
+
+-- Initial Jobskills data
+insert into Jobskills values('101', 's2', 5);
+insert into Jobskills values('101', 's7', 4);
+insert into Jobskills values('j02', 's2', 3);
+insert into Jobskills values('j02', 's7', 5);
+insert into Jobskills values('j03', 's6', 5);
+insert into Jobskills values('j04', 's7', 4);
+insert into Jobskills values('j04', 's4', 5);
+insert into Jobskills values('j04', 's2', 2);
+insert into Jobskills values('j05', 's3', 5);
+insert into Jobskills values('j06', 's1', 5);
+insert into Jobskills values('j06', 's2', 3);
+insert into Jobskills values('j07', 's1', 4);
+insert into Jobskills values('j07', 's7', 3);
+insert into Jobskills values('j08', 's1', 2);
+insert into Jobskills values('j09', 's2', 4);
+insert into Jobskills values('j09', 's4', 4);
+insert into Jobskills values('j10', 's4', 3);
+insert into Jobskills values('j10', 's1', 5);
+insert into Jobskills values('j11', 's5', 3);
+insert into Jobskills values('j11', 's4', 3);
+insert into Jobskills values('j12', 's5', 5);
+insert into Jobskills values('j13', 's1', 4);
+insert into Jobskills values('j13', 's2', 5);
+insert into Jobskills values('j14', 's7', 4);
+
+-- initial Applicants data
+insert into Applicant values('a1', 'Joe', 30, 'MS', 55000);
+insert into Applicant values('a2', 'Monica', 25, 'BS', 62000);
+insert into Applicant values('a3', 'Jim', 22, 'BS', 45000);
+insert into Applicant values('a4', 'Monica', 25, 'BS', 34000);
+
+-- initial Appskills data
+insert into Appskills values('a1', 's1', 3);
+insert into Appskills values('a1', 's2', 4);
+insert into Appskills values('a1', 's4', 4);
+insert into Appskills values('a1', 's6', 3);
+insert into Appskills values('a1', 's7', 4);
+insert into Appskills values('a2', 's2', 3);
+insert into Appskills values('a2', 's3', 5);
+insert into Appskills values('a2', 's6', 4);
+insert into Appskills values('a3', 's4', 3);
+insert into Appskills values('a3', 's1', 3);
+insert into Appskills values('a3', 's2', 5);
+
+-- Applies
+insert into Applies values ('101', 'a1', '01-JAN-06', '08-JAN-06', 'hire');
+insert into Applies values ('101', 'a2', '01-JAN-06', '08-JAN-06', 'hire');
+insert into Applies values ('j02', 'a2', '01-JAN-06', '08-JAN-06', 'hire');
+insert into Applies values ('j04', 'a2', '01-JAN-06', '08-JAN-06', 'hire');
+insert into Applies values ('j02', 'a3', '01-JAN-06', '08-JAN-06', 'nohire');
+insert into Applies values ('j04', 'a3', '01-JAN-06', '08-JAN-06', 'nohire');
+insert into Applies values ('j06', 'a3', '01-JAN-06', '08-JAN-06', 'nohire');
